@@ -10,6 +10,71 @@ Based on the Work of:
 * https://github.com/JonasProgrammer/docker-machine-driver-hetzner
 * https://github.com/cloudscale-ch/machine
 
+## Installation
+
+You can find sources and pre-compiled binaries [here](https://github.com/JonasProgrammer/docker-machine-driver-hetzner/releases).
+
+```bash
+# Download the binary (this example downloads the binary for linux amd64)
+$ wget https://github.com/JonasProgrammer/docker-machine-driver-hetzner/releases/download/1.2.2/docker-machine-driver-hetzner_1.2.2_linux_amd64.tar.gz
+$ tar -xvf docker-machine-driver-hetzner_1.2.2_linux_amd64.tar.gz
+
+# Make it executable and copy the binary in a directory accessible with your $PATH
+$ chmod +x docker-machine-driver-hetzner
+$ cp docker-machine-driver-hetzner /usr/local/bin/
+```
+
+## Usage
+
+```bash
+$ docker-machine create \
+  --driver cloudscale \
+  --cloudscale-token=... \
+  --cloudscale-image=ubuntu-18.04 \
+  --cloudscale-flavor=flex-4
+  some-machine
+```
+
+### Using environment variables
+
+```bash
+$ CLOUDSCALE_TOKEN=... \
+  && CLOUDSCALE_IMAGE=ubuntu-18.04 \
+  && CLOUDSCALE_FLAVOR=flex-4
+  && docker-machine create \
+     --driver hetzner \
+     some-machine
+```   
+
+
+### Using Cloud-init
+
+```bash
+$ CLOUD_INIT_USER_DATA=`cat <<EOF
+#cloud-config
+write_files:
+  - path: /test.txt
+    content: |
+      Here is a line.
+      Another line is here.
+EOF
+`
+
+$ docker-machine create \
+  --driver cloudscale \
+  --cloudscale-token==... \
+  --cloudscale-userdata="${CLOUD_INIT_USER_DATA}" \
+  some-machine
+```
+
+
+## Options
+
+- `--cloudscale-token`: **required**. Your project-specific access token for the cloudscale.ch API.
+- `--cloudscale-image`: The slug of the cloudscale.ch image to use, see [Images API](https://www.cloudscale.ch/en/api/v1#images) for how to get a list (defaults to `ubuntu-18.04`).
+- `--cloudscale-flavor`: The flavor of the cloudscale.ch server, see [Flavor API](https://docs.hetzner.cloud/#resources-server-types-get) for how to get a list (defaults to `flex-4`).
+- `--cloudscale-volume-size-gb`: The size of the root volume in GB.
+
 
 
 ## Building from source
