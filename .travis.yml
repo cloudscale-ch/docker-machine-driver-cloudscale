@@ -13,15 +13,12 @@ before_deploy:
   -ldflags "-X main.Version=`git describe --tags --abbrev=0`"
 - find releases -maxdepth 2 -mindepth 2 -type f -exec bash -c 'tar -cvzf "$(dirname
   {}).tar.gz" -C "$(dirname {})" $(basename {})' \;
-
-
 deploy:
-  # See https://docs.travis-ci.com/user/deployment/releases/
   provider: releases
   api_key:
-    secure: tiB9NejYdfxxm0E8N5wCe7laWCtoCVRyJH9KgfSDTYdKUZvzLQZumPPUabjlUmcV1DSHffW9z8zv7xV7kih5Y4xLxy0+Se+4UQxGveq4mADKtn28rKDWtxmOFgAUiHzLqS+4Deua39+WGPbdfPQqq1w/d6DAY7bdMsyCKc4un+/UohP9d1/upuISbxYq5x1pq+I5c8D0Z+MRrvfha87PUE9UDtmq4rCHZu3S4PcnrX4h4cO0VIY4IEV//C53OkQI3YDje8xgTTkcHLxnUTgJuEMszXyOQ0UqAELGKaeO8pSeXNIibcXJFxs+/AB0kUFyTomq0p6YUj1PcTFs/1oC0u4oT7lwabD8LFGvJ0dcq0DjdP4rTBxi2USQ+zl1/t1fu3FWaFZ+o/heg3VcpLtRApJa1Nd7jRTzA2Ad0VlO/Nr/DhTDBYdfScmHLA2dn9gWka9zCOD4ovCS8/lHgk18SvvXBG+YoFHKqelV1dVIT0ojvnUhGxpmIOPU1QGPcz7+5W1kEnEe2dW1Ybvl+DNWAVpaEtZadHwf6jXPdGeZzcv8mJigyCkiiRb16G1XZl0IBkgd76fpl/ZrWjjahwD0c9/V9JdW2/eAwqYlovw2pIAJNgWdehEZdvppU/XpHRZr+WXFss8pfxgGPWQeWlP35g9mQGtjfXZWgl5fKASh9q8=
-  file_glob: true # enables wildcards in file names
+    secure: Z648Ni28BUey9nvaaCxEbhtqlsZ5uNj1pgsiU/VuYIbtUKpK/g4T/58JMdRePp8GaeOBD/td5gRu1U7UFEDLyWV1SWqZaI/KAhEkx9jASZhzNQwg8KLfX4u5Czqw4yxYkBn2POYVc5JtLhEGAgSWgUc8s7wY9j3WIYIcQpnrXLjAtQLYyqDGeAYqc0qoAU5wuL6/xXuNon8QxPygkB1/weEz606q+oQONmgefNgVtjRUKYNm23UYs5Zrr8mkc3+SfFvXG6tfWoCU1iO9N5laA1g+Sh0OyjcUqMs9APczFhXn8CnTaCiGsEYs8vfRTcxyo/DWw9NG9yhZq8cdLDcneWtdKPliVNSqUsls17Rq8LF5+dKlEAKPXIAFpFl/aIC74H7LPiTmx0QqJ/JM3D4pUarfhdBv3CioCMKhz03zLBuLckHK9PziUMjIxsb3B/VM6w6QGpUyzCPNXFIE9Laq+WxOrDgcwkzkVM5QwfuoyjOLeRs99upuVLIftYicsJ0PjzudgFI7AXa2nfptgCUjXL7vtbMDr7sWAZGurgGaRgp4B1oPAvlW9eSC65qhPmh/zv7vWNXxnm0Ev/OUQrnmvt4Oh1523WHq2473ksO6GcunCWVxUsXqWbNlc32zV1YjZGDdxys/UjviyarnLBwxii4ydTNXKO36sZtyVkeiGzI=
   file: "releases/*.tar.gz"
   skip_cleanup: true
   on:
+    repo: splattner/docker-machine-driver-cloudscale
     tags: true
