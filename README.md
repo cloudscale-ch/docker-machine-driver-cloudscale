@@ -72,8 +72,10 @@ $ docker-machine create \
 
 - `--cloudscale-token`: **required**. Your project-specific access token for the cloudscale.ch API.
 - `--cloudscale-image`: The slug of the cloudscale.ch image to use, see [Images API](https://www.cloudscale.ch/en/api/v1#images) for how to get a list (defaults to `ubuntu-18.04`).
-- `--cloudscale-flavor`: The flavor of the cloudscale.ch server, see [Flavor API](https://docs.hetzner.cloud/#resources-server-types-get) for how to get a list (defaults to `flex-4`).
+- `--cloudscale-flavor`: The flavor of the cloudscale.ch server, see [Flavor API](https://www.cloudscale.ch/en/api/v1#flavors) for how to get a list (defaults to `flex-4`).
 - `--cloudscale-volume-size-gb`: The size of the root volume in GB.
+- `--cloudscale-ssh-user`: The SSH User (defaults to `root`)
+- `--cloudscale-ssh-port`: The SSH Port (defaults to `22`)
 
 
 
