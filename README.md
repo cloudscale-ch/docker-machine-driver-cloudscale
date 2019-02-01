@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/splattner/docker-machine-driver-cloudscale)](https://goreportcard.com/report/github.com/splattner/docker-machine-driver-cloudscale)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://secure.travis-ci.org/splattner/docker-machine-driver-cloudscale.png)](http://travis-ci.org/splattner/docker-machine-driver-cloudscale)
+[![Build Status](https://api.travis-ci.com/splattner/docker-machine-driver-cloudscale.svg?branch=master)](https://travis-ci.com/splattner/docker-machine-driver-cloudscale)
 
 > This library adds the support for creating [Docker machines](https://github.com/docker/machine) hosted on the [cloudscale.ch Cloud](https://www.cloudcale.ch).
 
