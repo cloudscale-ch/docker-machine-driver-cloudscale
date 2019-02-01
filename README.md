@@ -12,16 +12,16 @@ Based on the Work of:
 
 ## Installation
 
-You can find sources and pre-compiled binaries [here](https://github.com/JonasProgrammer/docker-machine-driver-hetzner/releases).
+You can find sources and pre-compiled binaries [here](https://github.com/splattner/docker-machine-driver-cloudscale/releases).
 
 ```bash
 # Download the binary (this example downloads the binary for linux amd64)
-$ wget https://github.com/JonasProgrammer/docker-machine-driver-hetzner/releases/download/1.2.2/docker-machine-driver-hetzner_1.2.2_linux_amd64.tar.gz
-$ tar -xvf docker-machine-driver-hetzner_1.2.2_linux_amd64.tar.gz
+$ wget https://github.com/splattner/docker-machine-driver-cloudscale/releases/download/v0.0.1/docker-machine-driver-cloudscale_v0.0.1_linux_amd64.tar.gz
+$ tar -xvf docker-machine-driver-cloudscale_v0.0.1_linux_amd64.tar.gz
 
 # Make it executable and copy the binary in a directory accessible with your $PATH
-$ chmod +x docker-machine-driver-hetzner
-$ cp docker-machine-driver-hetzner /usr/local/bin/
+$ chmod +x docker-machine-driver-cloudscale
+$ cp docker-machine-driver-cloudscale /usr/local/bin/
 ```
 
 ## Usage
