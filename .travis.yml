@@ -1,44 +1,25 @@
-# Builds the docker-machine-driver-hetzner and releases it, if the build is a tag
-# (due to the deploy.on.tags=true below).
-#
-# To make it work, create and encrypt an OAuth token for the Github API as follows:
-# (1) Go to https://github.com/settings/tokens and create a new private token
-#     with scope "public_repo".
-# (2) Convert the token into a Travis secret as described at
-#     https://docs.travis-ci.com/user/encryption-keys/:
-#     * (assuming you are on a shell with the current working directory being
-#       inside a local working copy of your Github project)
-#     * gem install travis
-#     * travis encypt <the token created in step (1)>
-#     * add the secure: "<encrypted token>" to the travis.yml file as a key
-#       below the api_key
 language: go
 go:
-  - stable
-
+- stable
 before_install:
-  # Install Go Dep
-  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-
+- curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 install:
-  - dep ensure
-
+- dep ensure
 before_deploy:
-  # Create binaries for many OSs and architures as tarballs.
-  # the -osarch="!a/b !c/d" option is used to exclude OS-arch pairs
-  # a/b and c/d from the build. OS-arch pairs might e.g. be excluded
-  # they failed to build.
-  - go get github.com/mitchellh/gox
-  - mkdir releases
-  - gox -osarch='!netbsd/arm !openbsd/386 !openbsd/amd64 !netbsd/386 !netbsd/amd64' -output="releases/{{.Dir}}_`git describe --tags --abbrev=0`_{{.OS}}_{{.Arch}}/{{.Dir}}" -ldflags "-X main.Version=`git describe --tags --abbrev=0`"
-  # Loop through the built architecture directories and create their corresponding tar.gz archives with the binary in it.
-  - find releases -maxdepth 2 -mindepth 2 -type f -exec bash -c 'tar -cvzf "$(dirname {}).tar.gz" -C "$(dirname {})" $(basename {})' \;
+- go get github.com/mitchellh/gox
+- mkdir releases
+- gox -osarch='!netbsd/arm !openbsd/386 !openbsd/amd64 !netbsd/386 !netbsd/amd64'
+  -output="releases/{{.Dir}}_`git describe --tags --abbrev=0`_{{.OS}}_{{.Arch}}/{{.Dir}}"
+  -ldflags "-X main.Version=`git describe --tags --abbrev=0`"
+- find releases -maxdepth 2 -mindepth 2 -type f -exec bash -c 'tar -cvzf "$(dirname
+  {}).tar.gz" -C "$(dirname {})" $(basename {})' \;
+
 
 deploy:
   # See https://docs.travis-ci.com/user/deployment/releases/
   provider: releases
   api_key:
-    secure: ""
+    secure: tiB9NejYdfxxm0E8N5wCe7laWCtoCVRyJH9KgfSDTYdKUZvzLQZumPPUabjlUmcV1DSHffW9z8zv7xV7kih5Y4xLxy0+Se+4UQxGveq4mADKtn28rKDWtxmOFgAUiHzLqS+4Deua39+WGPbdfPQqq1w/d6DAY7bdMsyCKc4un+/UohP9d1/upuISbxYq5x1pq+I5c8D0Z+MRrvfha87PUE9UDtmq4rCHZu3S4PcnrX4h4cO0VIY4IEV//C53OkQI3YDje8xgTTkcHLxnUTgJuEMszXyOQ0UqAELGKaeO8pSeXNIibcXJFxs+/AB0kUFyTomq0p6YUj1PcTFs/1oC0u4oT7lwabD8LFGvJ0dcq0DjdP4rTBxi2USQ+zl1/t1fu3FWaFZ+o/heg3VcpLtRApJa1Nd7jRTzA2Ad0VlO/Nr/DhTDBYdfScmHLA2dn9gWka9zCOD4ovCS8/lHgk18SvvXBG+YoFHKqelV1dVIT0ojvnUhGxpmIOPU1QGPcz7+5W1kEnEe2dW1Ybvl+DNWAVpaEtZadHwf6jXPdGeZzcv8mJigyCkiiRb16G1XZl0IBkgd76fpl/ZrWjjahwD0c9/V9JdW2/eAwqYlovw2pIAJNgWdehEZdvppU/XpHRZr+WXFss8pfxgGPWQeWlP35g9mQGtjfXZWgl5fKASh9q8=
   file_glob: true # enables wildcards in file names
   file: "releases/*.tar.gz"
   skip_cleanup: true
