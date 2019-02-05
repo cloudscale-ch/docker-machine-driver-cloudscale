@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/cloudscale-ch/cloudscale-go-sdk"
+	cloudscale "github.com/cloudscale-ch/cloudscale-go-sdk"
 	"github.com/docker/machine/libmachine/drivers"
 	"github.com/docker/machine/libmachine/log"
 	"github.com/docker/machine/libmachine/mcnflag"
@@ -25,6 +25,7 @@ type Driver struct {
 	Flavor            string
 	Region            string
 	UsePrivateNetwork bool
+	UseIPv6           bool
 	UserDataFile      string
 	VolumeSizeGB      int
 	AntiAffinityWith  string
@@ -100,6 +101,11 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 			Name:   "cloudscale-anti-affinity-with",
 			Usage:  "a UUID of another server",
 		},
+		mcnflag.BoolFlag{
+			EnvVar: "CLOUDSCALE_USE_IPV6",
+			Name:   "cloudscale-use-ipv6",
+			Usage:  "enable IPv6 on the public network Interface",
+		},
 	}
 }
 
@@ -129,6 +135,7 @@ func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.Region = flags.String("cloudscale-region")
 	d.Flavor = flags.String("cloudscale-flavor")
 	d.UsePrivateNetwork = flags.Bool("cloudscale-use-private-network")
+	d.UseIPV6 = flags.Bool("cloudscale-use-ipv6")
 	d.UserDataFile = flags.String("cloudscale-userdata")
 	d.SSHUser = flags.String("cloudscale-ssh-user")
 	d.SSHPort = flags.Int("cloudscale-ssh-port")
@@ -182,6 +189,7 @@ func (d *Driver) Create() error {
 		Flavor:            d.Flavor,
 		Name:              d.MachineName,
 		UsePrivateNetwork: &d.UsePrivateNetwork,
+		UseIPV6:           &d.UseIPV6,
 		UserData:          userdata,
 		SSHKeys:           []string{string(publicKey)},
 		VolumeSizeGB:      d.VolumeSizeGB,
@@ -204,7 +212,7 @@ func (d *Driver) Create() error {
 		for _, interface_ := range newServer.Interfaces {
 			if interface_.Type == "public" {
 				for _, address := range interface_.Adresses {
-					if address.Version == 6 {
+					if address.Version == 4 {
 						d.IPAddress = address.Address
 					}
 				}
