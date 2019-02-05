@@ -25,7 +25,7 @@ type Driver struct {
 	Flavor            string
 	Region            string
 	UsePrivateNetwork bool
-	UseIPv6           bool
+	UseIPV6           bool
 	UserDataFile      string
 	VolumeSizeGB      int
 	AntiAffinityWith  string
