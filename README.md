@@ -42,7 +42,7 @@ $ CLOUDSCALE_TOKEN=... \
   && CLOUDSCALE_IMAGE=ubuntu-18.04 \
   && CLOUDSCALE_FLAVOR=flex-4
   && docker-machine create \
-     --driver hetzner \
+     --driver cloudscale \
      some-machine
 ```   
 
