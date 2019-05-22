@@ -31,7 +31,7 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/cloudscale-ch/cloudscale-go-sdk"
+  name = "github.com/alakae/cloudscale-go-sdk"
 
 [prune]
   go-tests = true
