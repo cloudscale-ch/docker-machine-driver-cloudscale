@@ -29,6 +29,7 @@ type Driver struct {
 	UserDataFile      string
 	VolumeSizeGB      int
 	AntiAffinityWith  string
+	ServerGroups      []string
 }
 
 const (
@@ -101,6 +102,11 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 			Name:   "cloudscale-anti-affinity-with",
 			Usage:  "a UUID of another server",
 		},
+		mcnflag.StringSliceFlag{
+			EnvVar: "CLOUDSCALE_SERVER_GROUPS",
+			Name:   "cloudscale-server-groups",
+			Usage:  "a list of UUIDs of server groups",
+		},
 		mcnflag.BoolFlag{
 			EnvVar: "CLOUDSCALE_USE_IPV6",
 			Name:   "cloudscale-use-ipv6",
@@ -141,6 +147,7 @@ func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.SSHPort = flags.Int("cloudscale-ssh-port")
 	d.VolumeSizeGB = flags.Int("cloudscale-volume-size-gb")
 	d.AntiAffinityWith = flags.String("cloudscale-anti-affinity-with")
+	d.ServerGroups = flags.StringSlice("cloudscale-server-groups")
 
 	d.SetSwarmConfigFromFlags(flags)
 
@@ -194,6 +201,7 @@ func (d *Driver) Create() error {
 		SSHKeys:           []string{string(publicKey)},
 		VolumeSizeGB:      d.VolumeSizeGB,
 		AntiAffinityWith:  d.AntiAffinityWith,
+		ServerGroups:      d.ServerGroups,
 	}
 
 	newServer, err := client.Servers.Create(context.TODO(), createRequest)
