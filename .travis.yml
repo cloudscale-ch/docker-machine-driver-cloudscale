@@ -16,10 +16,10 @@ before_deploy:
 deploy:
   provider: releases
   api_key:
-    secure: iNzUF8QKEW7W+W/Aogt7UiwiTXTyZ472R/oLR7RFE2flTSxd1BXR9ZV3k7RvedhN/brFc+cnUFohQtDsRj4VG4+rhxhAOCwJ1uzPwLTQXtd+Pq1TwVV7AHaDdLeSDcHzrVXkWNoNuju9AFN9t+w4SGA5swiA1hC9Sib4HZSsuU3XdvL25g6pK8bPxSyHFWtIKyeqshE+d8+RqNN+1c7zaHIJHaOKep7K3hl3QBmx4L2ibRfE7LMZk+GKioN5cVhn3JCf/t1dUKV87Uwd1AHubCxttQ1r2cVNQ0fdp2LkzPwiwiMkDOU+OHpjtB5HBS4TQgSlo7TXSIw5Pd14iwWfKC/J2qvO/xZ54Ofp0mMjDWvWWBDVJwNWTkmFDbCR1lJ0mNFjmfLfHIWjFH/LgNTPGZYMo87fLAtMoPITwj4M3yuq9DfrtX3zvrVwMHSoYL4eviHTkdksYbkgnouHLMW0HGFGA06BOuQrg9UsyX/j/TuejrmphgIM7TNPz8Sria4KZroLPUhRx6qlFQmKduf8NSZU8Iqtwq7VwmgZAk+WmGh2fAk+DQiw+kT33HTVIMOGPvz6C4aD63JXWIT0zZvh4js7hen9Hbn1r1qyoboBjlsoX9DUW1LnzQfN/Yoz2Q9E5Qemr09LReOzteUZd+rvqZkyaT0jZjhMSDF2BByDG28=
+    secure: $GITHUB_OAUTH_TOKEN
   file: "releases/*.tar.gz"
   file_glob: true # enables wildcards in file names
   skip_cleanup: true
+  prerelease: true
   on:
-    repo: splattner/docker-machine-driver-cloudscale
     tags: true
