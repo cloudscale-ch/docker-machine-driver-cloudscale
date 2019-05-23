@@ -14,11 +14,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:7e52523af9f20443cbc01f3c3f90b28073a4980325acec94fde0f399b6d67cc8"
-  name = "github.com/alakae/cloudscale-go-sdk"
+  digest = "1:2e6f42fc7cd06ac773b148a6e0d0ffa5ab0d943a86babe7057190617eb656afa"
+  name = "github.com/cloudscale-ch/cloudscale-go-sdk"
   packages = ["."]
   pruneopts = "UT"
-  revision = "9c78af9971cfe72e69bcd6a6f8df9a6b646a6f0b"
+  revision = "c0ff9b92e8ad337284ed2e341a65b835af9c3632"
 
 [[projects]]
   branch = "master"
@@ -145,7 +145,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/alakae/cloudscale-go-sdk",
+    "github.com/cloudscale-ch/cloudscale-go-sdk",
     "github.com/docker/machine/libmachine/drivers",
     "github.com/docker/machine/libmachine/drivers/plugin",
     "github.com/docker/machine/libmachine/log",
