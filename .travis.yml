@@ -8,7 +8,7 @@ install:
 before_deploy:
 - go get github.com/mitchellh/gox
 - mkdir releases
-- gox -os='!windows !netbsd !openbsd !darwin !freebsd' -osarch='!linux/mipsle !linux/arm !linux/s390x !linux/mips64le !linux/mips !linux/mips64'
+- gox -osarch="linux/amd64 darwin/amd64"
   -output="releases/{{.Dir}}_`git describe --tags --abbrev=0`_{{.OS}}_{{.Arch}}/{{.Dir}}"
   -ldflags "-X main.Version=`git describe --tags --abbrev=0`"
 - find releases -maxdepth 2 -mindepth 2 -type f -exec bash -c 'tar -cvzf "$(dirname
