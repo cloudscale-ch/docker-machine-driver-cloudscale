@@ -42,7 +42,7 @@ $ CLOUDSCALE_TOKEN=... \
   && CLOUDSCALE_IMAGE=ubuntu-18.04 \
   && CLOUDSCALE_FLAVOR=flex-4
   && docker-machine create \
-     --driver hetzner \
+     --driver cloudscale \
      some-machine
 ```   
 
@@ -78,6 +78,7 @@ $ docker-machine create \
 - `--cloudscale-ssh-port`: The SSH Port (defaults to `22`)
 - `--cloudscale-use-private-network`: Enables the Private network Interface (defaults to `false`)
 - `--cloudscale-use-ipv6`: Enables IPv6 on Public Network Interface (defaults to `false`)
+- `--cloudscale-server-groups`: the UUIDs of server groups identifying the [server groups](https://www.cloudscale.ch/en/api/v1#server-groups) to which the new server will be added.
 - `--cloudscale-anti-affinity-with`: the UUID of another server to create an anti-affinity group with that server or add it to the same group as that server.
 
 
