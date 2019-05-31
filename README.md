@@ -89,11 +89,14 @@ $ docker-machine create \
 
 ## Building from source
 
-Use an up-to-date version of [Go](https://golang.org/dl) and [dep](https://github.com/golang/dep)
+Use an up-to-date version of [Go](https://golang.org/dl).
 
 To use the driver, you can download the sources and build it locally:
 
 ```shell
+# Enable Go Modules if you are not outside of your $GOPATH
+$ export GO111MODULE=on
+ 
 # Get sources and build the binary at ~/go/bin/docker-machine-driver-cloudscale
 $ go get github.com/cloudscale-ch/docker-machine-driver-cloudscale
 
@@ -102,7 +105,6 @@ $ export GOPATH=$(go env GOPATH)
 $ export GOBIN=$GOPATH/bin
 $ export PATH="$PATH:$GOBIN"
 $ cd $GOPATH/src/github.com/cloudscale-ch/docker-machine-driver-cloudscale
-$ dep ensure
 $ go build -o docker-machine-driver-cloudscale
 $ cp docker-machine-driver-cloudscale $GOBIN
 ```
