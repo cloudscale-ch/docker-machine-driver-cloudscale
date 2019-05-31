@@ -33,10 +33,11 @@ type Driver struct {
 }
 
 const (
-	defaultSSHPort = 22
-	defaultSSHUser = "root"
-	defaultImage   = "ubuntu-18.04"
-	defaultFlavor  = "flex-4"
+	defaultSSHPort    = 22
+	defaultSSHUser    = "root"
+	defaultImage      = "ubuntu-18.04"
+	defaultFlavor     = "flex-4"
+	defaultVolumeSize = 10
 )
 
 // GetCreateFlags registers the flags this driver adds to
@@ -96,6 +97,7 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 			EnvVar: "CLOUDSCALE_VOLUME_SIZE_GB",
 			Name:   "cloudscale-volume-size-gb",
 			Usage:  "set the size of the root volume in GB",
+			Value:  defaultVolumeSize,
 		},
 		mcnflag.StringFlag{
 			EnvVar: "CLOUDSCALE_ANTI_AFFINITY_WITH",
