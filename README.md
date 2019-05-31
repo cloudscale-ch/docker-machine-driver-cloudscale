@@ -34,7 +34,7 @@ $ docker-machine create \
   some-machine
 ```
 
-See `docker-machine create  --driver cloudscale` for a complete list of all supported options.
+See `docker-machine create  --driver cloudscale --help` for a complete list of all supported options.
 
 ### Using environment variables
 
@@ -47,7 +47,7 @@ $ CLOUDSCALE_TOKEN=... \
      some-machine
 ```
 
-See `docker-machine create  --driver cloudscale` for a complete list of all supported environment variables.
+See `docker-machine create  --driver cloudscale --help` for a complete list of all supported environment variables.
 
 ### Using Cloud-init
 
@@ -134,7 +134,7 @@ $ export GOBIN=$GOPATH/bin
 $ export PATH="$PATH:$GOBIN"
 
 # Make docker-machine output help including cloudscale-specific options
-$ docker-machine create --driver cloudscale
+$ docker-machine create --driver cloudscale --help
 ```
 
 ## Credits
