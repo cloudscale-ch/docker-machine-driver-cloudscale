@@ -18,7 +18,7 @@ You can find sources and pre-compiled binaries [here](https://github.com/cloudsc
 $ wget https://github.com/cloudscale-ch/docker-machine-driver-cloudscale/releases/download/v1.0.0-rc2/docker-machine-driver-cloudscale_v1.0.0-rc2_linux_amd64.tar.gz
 $ tar xzvf docker-machine-driver-cloudscale_v1.0.0-rc2_linux_amd64.tar.gz
 
-# Make it executable and copy the binary to a directory accessible with your $PATH
+# Make it executable and copy the binary to a directory included in your $PATH
 $ chmod +x docker-machine-driver-cloudscale
 $ cp docker-machine-driver-cloudscale /usr/local/bin/
 ```
