@@ -1,6 +1,18 @@
 language: go
+sudo: true
 go:
 - stable
+services:
+  - docker
+script:
+  - go build
+  - base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+    curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+    sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+  - docker --version
+  - docker-machine --version
+  - git clone https://github.com/sstephenson/bats.git
+  - sudo ./bats/install.sh /usr/local
 before_deploy:
 - go get github.com/mitchellh/gox
 - mkdir releases
