@@ -148,7 +148,7 @@ In order to run the integration test suite, please make sure that:
   
 If all of the above is fullfilled, invoke the test suite by calling:
 
-`bats tests/integration `
+`bats tests/integration`
 
 
 ## Credits
