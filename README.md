@@ -74,7 +74,7 @@ $ docker-machine create \
 ## Options
 
 - `--cloudscale-token`: **required**. Your project-specific access token for the cloudscale.ch API.
-- `--cloudscale-image`: The slug of the cloudscale.ch image to use, see [Images API](https://www.cloudscale.ch/en/api/v1#images) for how to get a list of available images (defaults to `ubuntu-18.04`).
+- `--cloudscale-image`: The slug of the cloudscale.ch image to use, see [Images API](https://www.cloudscale.ch/en/api/v1#images) for how to get a list of available images (defaults to `ubuntu-18.04`). A list of operating systems supported by docker-machine can be obtained [here](https://docs.docker.com/machine/drivers/os-base/).
 - `--cloudscale-flavor`: The flavor of the cloudscale.ch server, see [Flavor API](https://www.cloudscale.ch/en/api/v1#flavors) for how to get a list of available flavors (defaults to `flex-4`).
 - `--cloudscale-volume-size-gb`: The size of the root volume in GB (defaults to `10`).
 - `--cloudscale-ssh-user`: The SSH user (defaults to `root`).
