@@ -15,8 +15,8 @@ You can find sources and pre-compiled binaries [here](https://github.com/cloudsc
 
 ```bash
 # Download the binary (this example downloads the binary for Linux amd64)
-$ wget https://github.com/cloudscale-ch/docker-machine-driver-cloudscale/releases/download/v1.0.0-rc2/docker-machine-driver-cloudscale_v1.0.0-rc2_linux_amd64.tar.gz
-$ tar xzvf docker-machine-driver-cloudscale_v1.0.0-rc2_linux_amd64.tar.gz
+$ wget https://github.com/cloudscale-ch/docker-machine-driver-cloudscale/releases/download/v1.0.0/docker-machine-driver-cloudscale_v1.0.0_linux_amd64.tar.gz
+$ tar xzvf docker-machine-driver-cloudscale_v1.0.0_linux_amd64.tar.gz
 
 # Make it executable and copy the binary to a directory included in your $PATH
 $ chmod +x docker-machine-driver-cloudscale
@@ -155,3 +155,4 @@ If all of the above is fullfilled, invoke the test suite by calling:
 This driver is based on the great work of:
 * [JonasProgrammer](https://github.com/JonasProgrammer/) for [docker-machine-driver-hetzner](https://github.com/JonasProgrammer/docker-machine-driver-hetzner)
 * [splattner](https://github.com/splattner) from [Puzzle ITC](https://www.puzzle.ch)
+* [DigitalOcean](https://github.com/digitalocean) for their [docker-machine-driver](https://github.com/docker/machine/tree/master/drivers/digitalocean)
