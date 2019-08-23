@@ -27,6 +27,7 @@ type Driver struct {
 	UsePrivateNetwork bool
 	UseIPV6           bool
 	UserDataFile      string
+	UserData          string
 	VolumeSizeGB      int
 	AntiAffinityWith  string
 	ServerGroups      []string
@@ -91,6 +92,11 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 		mcnflag.StringFlag{
 			EnvVar: "CLOUDSCALE_USERDATA",
 			Name:   "cloudscale-userdata",
+			Usage:  "cloud-init user-data",
+		},
+		mcnflag.StringFlag{
+			EnvVar: "CLOUDSCALE_USERDATAFILE",
+			Name:   "cloudscale-userdatafile",
 			Usage:  "path to file with cloud-init user-data",
 		},
 		mcnflag.IntFlag{
@@ -144,7 +150,8 @@ func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.Flavor = flags.String("cloudscale-flavor")
 	d.UsePrivateNetwork = flags.Bool("cloudscale-use-private-network")
 	d.UseIPV6 = flags.Bool("cloudscale-use-ipv6")
-	d.UserDataFile = flags.String("cloudscale-userdata")
+	d.UserDataFile = flags.String("cloudscale-userdatafile")
+	d.UserData = flags.String("cloudscale-userdata")
 	d.SSHUser = flags.String("cloudscale-ssh-user")
 	d.SSHPort = flags.Int("cloudscale-ssh-port")
 	d.VolumeSizeGB = flags.Int("cloudscale-volume-size-gb")
@@ -177,6 +184,10 @@ func (d *Driver) Create() error {
 			return err
 		}
 		userdata = string(buf)
+	} else {
+		if d.UserData != "" {
+			userdata = d.UserData
+		}
 	}
 
 	log.Infof("Creating SSH key...")
