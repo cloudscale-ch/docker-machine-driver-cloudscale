@@ -66,7 +66,7 @@ EOF
 $ docker-machine create \
   --driver cloudscale \
   --cloudscale-token=... \
-  --cloudscale-userdata=/tmp/my-user-data.yaml \
+  --cloudscale-userdatafile=/tmp/my-user-data.yaml \
   some-machine
 ```
 
@@ -83,7 +83,8 @@ $ docker-machine create \
 - `--cloudscale-use-ipv6`: Enables IPv6 on public network interface (defaults to `false`).
 - `--cloudscale-server-groups`: the UUIDs identifying the [server groups](https://www.cloudscale.ch/en/api/v1#server-groups) to which the new server will be added.
 - `--cloudscale-anti-affinity-with`: the UUID of another server to create an anti-affinity group with that server or add it to the same group as that server.
-- `--cloudscale-userdata`: path to file with cloud-init user data
+- `--cloudscale-userdata`: cloud-init user data
+- `--cloudscale-userdatafile`: path to file with cloud-init user data
 
 
 
