@@ -135,3 +135,16 @@ write_files:
   # assert
   [ "$actual" = "my cli user-data test" ]
 }
+
+
+@test "test cannot launch a machine when both --cloudscale-userdata and --cloudscale-userdatafile are given" {
+  # pre-condition
+  load ./assert_no_server
+
+  # act
+  run docker-machine create --driver cloudscale --cloudscale-userdata astring --cloudscale-userdatafile afile wontwork
+
+  # assert
+  [ "$status" -eq 3 ]
+  [ "${lines[1]}" = "Error with pre-create check: \"--cloudscale-userdata and --cloudscale-userdatafile cannot be used together\"" ]
+}

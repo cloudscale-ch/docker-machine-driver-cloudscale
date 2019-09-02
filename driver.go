@@ -169,6 +169,10 @@ func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 }
 
 func (d *Driver) PreCreateCheck() error {
+	if d.UserDataFile != "" && d.UserData != "" {
+		return fmt.Errorf("--cloudscale-userdata and --cloudscale-userdatafile cannot be used together")
+	}
+
 	if d.UserDataFile != "" {
 		if _, err := os.Stat(d.UserDataFile); os.IsNotExist(err) {
 			return fmt.Errorf("user-data file %s could not be found", d.UserDataFile)
