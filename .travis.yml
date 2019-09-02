@@ -4,9 +4,13 @@ go:
 - stable
 services:
   - docker
+env:
+  matrix:
+    - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.0"
+    - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.2"
 script:
   - go build
-  - base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+  - base=$BASE_DOWNLOAD_URL &&
     curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
     sudo install /tmp/docker-machine /usr/local/bin/docker-machine
   - docker --version
