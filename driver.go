@@ -93,7 +93,7 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 		mcnflag.StringFlag{
 			EnvVar: "CLOUDSCALE_USERDATA",
 			Name:   "cloudscale-userdata",
-			Usage:  "cloud-init user-data",
+			Usage:  "string containing cloud-init user-data",
 		},
 		mcnflag.StringFlag{
 			EnvVar: "CLOUDSCALE_USERDATAFILE",
