@@ -95,3 +95,43 @@ function teardown() {
   [ "$disk" = "13G" ]
   [ "$mem" = "MemTotal: 2041232 kB" ]
 }
+
+
+@test "test launch a machine with cloud-init from file" {
+  # pre-condition
+  load ./assert_no_server
+
+  # arrange
+  echo "#cloud-config
+write_files:
+  - path: /test.txt
+    content: |
+      my userdatafile" >> test_user_data.yaml
+
+  # act
+  docker-machine create --driver cloudscale --cloudscale-userdatafile test_user_data.yaml $MACHINE_NAME
+  actual="$(docker-machine ssh $MACHINE_NAME 'cat /test.txt')"
+
+  # assert
+  [ "$actual" = "my userdatafile" ]
+}
+
+
+@test "test launch a machine with cloud-init from command line" {
+  # pre-condition
+  load ./assert_no_server
+
+  # arrange
+  TEST_USER_DATA="#cloud-config
+write_files:
+  - path: /test.txt
+    content: |
+      my cli user-data test"
+
+  # act
+  docker-machine create --driver cloudscale --cloudscale-userdata "$TEST_USER_DATA" $MACHINE_NAME
+  actual="$(docker-machine ssh $MACHINE_NAME 'cat /test.txt')"
+
+  # assert
+  [ "$actual" = "my cli user-data test" ]
+}
