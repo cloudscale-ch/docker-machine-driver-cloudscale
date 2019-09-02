@@ -192,7 +192,7 @@ func (d *Driver) Create() error {
 		userdata = string(buf)
 	} else {
 		if d.UserData != "" {
-			userdata = strings.Replace(d.UserData, `\n`, "\n", -1)
+			userdata = d.UserData
 		}
 	}
 
