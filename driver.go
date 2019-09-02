@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net"
 	"os"
-	"strings"
 	"time"
 
 	cloudscale "github.com/cloudscale-ch/cloudscale-go-sdk"
