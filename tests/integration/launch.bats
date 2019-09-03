@@ -122,14 +122,10 @@ write_files:
   load ./assert_no_server
 
   # arrange
-  TEST_USER_DATA="#cloud-config
-write_files:
-  - path: /test.txt
-    content: |
-      my cli user-data test"
+  TEST_USER_DATA="#cloud-config\nwrite_files:\n  - path: /test.txt\n    content: |\n      my cli user-data test\n"
 
   # act
-  docker-machine create --driver cloudscale --cloudscale-userdata "$TEST_USER_DATA" $MACHINE_NAME
+  docker-machine create --driver cloudscale --cloudscale-userdata "`echo -e "$TEST_USER_DATA"`" $MACHINE_NAME
   actual="$(docker-machine ssh $MACHINE_NAME 'cat /test.txt')"
 
   # assert
