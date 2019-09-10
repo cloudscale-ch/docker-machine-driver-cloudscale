@@ -51,6 +51,10 @@ See `docker-machine create  --driver cloudscale --help` for a complete list of a
 
 ### Using cloud-init
 
+User data (cloud-config for cloud-init) to use for the new server. Needs to be valid YAML. 
+
+#### From File
+
 ```bash
 $ cat <<EOF > /tmp/my-user-data.yaml
 #cloud-config
@@ -66,10 +70,19 @@ EOF
 $ docker-machine create \
   --driver cloudscale \
   --cloudscale-token=... \
-  --cloudscale-userdata=/tmp/my-user-data.yaml \
+  --cloudscale-userdatafile=/tmp/my-user-data.yaml \
   some-machine
 ```
 
+#### From Command Line
+
+```bash
+$ docker-machine create \
+  --driver cloudscale \
+  --cloudscale-token=... \
+  --cloudscale-userdata "`echo -e "#cloud-config\nwrite_files:\n  - path: /test.txt\n    content: |\n      my cli user-data test\n"`" \
+  some-machine
+```
 
 ## Options
 
@@ -83,7 +96,8 @@ $ docker-machine create \
 - `--cloudscale-use-ipv6`: Enables IPv6 on public network interface (defaults to `false`).
 - `--cloudscale-server-groups`: the UUIDs identifying the [server groups](https://www.cloudscale.ch/en/api/v1#server-groups) to which the new server will be added.
 - `--cloudscale-anti-affinity-with`: the UUID of another server to create an anti-affinity group with that server or add it to the same group as that server.
-- `--cloudscale-userdata`: path to file with cloud-init user data
+- `--cloudscale-userdata`: string containing cloud-init user data
+- `--cloudscale-userdatafile`: path to file with cloud-init user data
 
 
 

@@ -16,7 +16,8 @@
   echo "$output" | grep 'cloudscale-token'
   echo "$output" | grep 'cloudscale-use-ipv6'
   echo "$output" | grep 'cloudscale-use-private-network'
-  echo "$output" | grep 'cloudscale-userdata'
+  echo "$output" | grep 'cloudscale-userdata[[:space:]]'
+  echo "$output" | grep 'cloudscale-userdatafile'
   echo "$output" | grep 'cloudscale-volume-size-gb "10"'
 }
 
