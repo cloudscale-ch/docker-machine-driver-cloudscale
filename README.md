@@ -51,6 +51,10 @@ See `docker-machine create  --driver cloudscale --help` for a complete list of a
 
 ### Using cloud-init
 
+User data (cloud-config for cloud-init) to use for the new server. Needs to be valid YAML. 
+
+#### From File
+
 ```bash
 $ cat <<EOF > /tmp/my-user-data.yaml
 #cloud-config
@@ -70,6 +74,15 @@ $ docker-machine create \
   some-machine
 ```
 
+#### From Command Line
+
+```bash
+$ docker-machine create \
+  --driver cloudscale \
+  --cloudscale-token=... \
+  --cloudscale-userdata "`echo -e "#cloud-config\nwrite_files:\n  - path: /test.txt\n    content: |\n      my cli user-data test\n"`" \
+  some-machine
+```
 
 ## Options
 
