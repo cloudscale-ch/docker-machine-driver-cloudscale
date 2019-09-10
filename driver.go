@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net"
 	"os"
-	"strings"
 	"time"
 
 	cloudscale "github.com/cloudscale-ch/cloudscale-go-sdk"
@@ -182,7 +181,6 @@ func (d *Driver) PreCreateCheck() error {
 }
 
 func (d *Driver) Create() error {
-
 	var userdata string
 	if d.UserDataFile != "" {
 		buf, err := ioutil.ReadFile(d.UserDataFile)
@@ -192,7 +190,7 @@ func (d *Driver) Create() error {
 		userdata = string(buf)
 	} else {
 		if d.UserData != "" {
-			userdata = strings.Replace(d.UserData, `\n`, "\n", -1)
+			userdata = d.UserData
 		}
 	}
 
