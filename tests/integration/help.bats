@@ -15,6 +15,7 @@
   echo "$output" | grep 'cloudscale-ssh-user "root"'
   echo "$output" | grep 'cloudscale-token'
   echo "$output" | grep 'cloudscale-use-ipv6'
+  echo "$output" | grep 'cloudscale-no-public-network'
   echo "$output" | grep 'cloudscale-use-private-network'
   echo "$output" | grep 'cloudscale-userdata[[:space:]]'
   echo "$output" | grep 'cloudscale-userdatafile'

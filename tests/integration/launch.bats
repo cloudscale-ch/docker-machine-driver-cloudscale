@@ -144,3 +144,17 @@ write_files:
   [ "$status" -eq 3 ]
   [ "${lines[1]}" = "Error with pre-create check: \"--cloudscale-userdata and --cloudscale-userdatafile cannot be used together\"" ]
 }
+
+
+@test "test launch a machine with private interface" {
+  # pre-condition
+  load ./assert_no_server
+
+  # act
+  run docker-machine create --driver cloudscale --cloudscale-use-private-network $MACHINE_NAME
+  interfaces="$(docker-machine ssh $MACHINE_NAME 'ls -m /sys/class/net')"
+
+
+  # assert
+  [ "$interfaces" = "docker0, ens3, ens4, lo" ]
+}

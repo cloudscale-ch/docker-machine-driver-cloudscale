@@ -92,8 +92,9 @@ $ docker-machine create \
 - `--cloudscale-volume-size-gb`: The size of the root volume in GB (defaults to `10`).
 - `--cloudscale-ssh-user`: The SSH user (defaults to `root`).
 - `--cloudscale-ssh-port`: The SSH port (defaults to `22`).
-- `--cloudscale-use-private-network`: Enables the private network interface (defaults to `false`).
-- `--cloudscale-use-ipv6`: Enables IPv6 on public network interface (defaults to `false`).
+- `--cloudscale-no-public-network`: Disables the public network interface.
+- `--cloudscale-use-private-network`: Enables the private network interface.
+- `--cloudscale-use-ipv6`: Enables IPv6 on public network interface.
 - `--cloudscale-server-groups`: the UUIDs identifying the [server groups](https://www.cloudscale.ch/en/api/v1#server-groups) to which the new server will be added.
 - `--cloudscale-anti-affinity-with`: the UUID of another server to create an anti-affinity group with that server or add it to the same group as that server.
 - `--cloudscale-userdata`: string containing cloud-init user data
