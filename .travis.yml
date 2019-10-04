@@ -1,14 +1,14 @@
 language: go
 sudo: true
 go:
-- stable
+  - stable
 services:
   - docker
 env:
   matrix:
     - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.0"
     - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.2"
-script:
+script: &build_script
   - go build
   - base=$BASE_DOWNLOAD_URL &&
     curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
@@ -18,21 +18,28 @@ script:
   - git clone https://github.com/sstephenson/bats.git
   - sudo ./bats/install.sh /usr/local
   - bats tests/integration
-before_deploy:
-- go get github.com/mitchellh/gox
-- mkdir releases
-- gox -osarch="linux/amd64 darwin/amd64"
-  -output="releases/{{.Dir}}_`git describe --tags --abbrev=0`_{{.OS}}_{{.Arch}}/{{.Dir}}"
-  -ldflags "-X main.Version=`git describe --tags --abbrev=0`"
-- find releases -maxdepth 2 -mindepth 2 -type f -exec bash -c 'tar -cvzf "$(dirname
-  {}).tar.gz" -C "$(dirname {})" $(basename {})' \;
-deploy:
-  provider: releases
-  api_key:
-    secure: $GITHUB_OAUTH_TOKEN
-  file: "releases/*.tar.gz"
-  file_glob: true # enables wildcards in file names
-  skip_cleanup: true
-  prerelease: true
-  on:
-    tags: true
+
+jobs:
+  include:
+    - stage: Deployment
+      script: *build_script
+      env:
+        - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.2"
+      before_deploy:
+        - go get github.com/mitchellh/gox
+        - mkdir releases
+        - gox -osarch="linux/amd64 darwin/amd64"
+          -output="releases/{{.Dir}}_`git describe --tags --abbrev=0`_{{.OS}}_{{.Arch}}/{{.Dir}}"
+          -ldflags "-X main.Version=`git describe --tags --abbrev=0`"
+        - find releases -maxdepth 2 -mindepth 2 -type f -exec bash -c 'tar -cvzf "$(dirname
+          {}).tar.gz" -C "$(dirname {})" $(basename {})' \;
+      deploy:
+        provider: releases
+        api_key:
+          secure: $GITHUB_OAUTH_TOKEN
+        file: "releases/*.tar.gz"
+        file_glob: true # enables wildcards in file names
+        skip_cleanup: true
+        prerelease: true
+        on:
+          tags: true
