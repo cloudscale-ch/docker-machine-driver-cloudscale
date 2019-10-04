@@ -12,7 +12,6 @@ jobs:
   include:
     - &integration
       stage: Integration Test
-      if: env(CLOUDSCALE_TOKEN) IS present AND NOT TRAVIS_PULL_REQUEST
       script:
         - base=$BASE_DOWNLOAD_URL &&
           curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
@@ -21,7 +20,10 @@ jobs:
         - docker-machine --version
         - git clone https://github.com/sstephenson/bats.git
         - sudo ./bats/install.sh /usr/local
-        - bats tests/integration
+        - bats tests/integration/help.bats
+        # the following tests require a token
+        - if [ -z "$CLOUDSCALE_TOKEN" ]; then exit 0; fi
+        - bats tests/integration/launch.bats
       env:
         - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.0"
     - <<: *integration
