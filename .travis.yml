@@ -4,27 +4,31 @@ go:
   - stable
 services:
   - docker
-env:
-  matrix:
-    - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.0"
-    - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.2"
-script: &build_script
+
+script:
   - go build
-  - base=$BASE_DOWNLOAD_URL &&
-    curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
-    sudo install /tmp/docker-machine /usr/local/bin/docker-machine
-  - docker --version
-  - docker-machine --version
-  - git clone https://github.com/sstephenson/bats.git
-  - sudo ./bats/install.sh /usr/local
-  - bats tests/integration
 
 jobs:
   include:
-    - stage: Deployment
-      script: *build_script
+    - &integration
+      stage: Integration Test
+      if: env(CLOUDSCALE_TOKEN) IS present
+      script:
+        - base=$BASE_DOWNLOAD_URL &&
+          curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+          sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+        - docker --version
+        - docker-machine --version
+        - git clone https://github.com/sstephenson/bats.git
+        - sudo ./bats/install.sh /usr/local
+        - bats tests/integration
+      env:
+        - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.0"
+    - <<: *integration
       env:
         - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.2"
+
+    - stage: Deployment
       before_deploy:
         - go get github.com/mitchellh/gox
         - mkdir releases
