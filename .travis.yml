@@ -12,7 +12,7 @@ jobs:
   include:
     - &integration
       stage: Integration Test
-      if: env(CLOUDSCALE_TOKEN) IS present
+      if: env(CLOUDSCALE_TOKEN) IS present AND NOT TRAVIS_PULL_REQUEST
       script:
         - base=$BASE_DOWNLOAD_URL &&
           curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
