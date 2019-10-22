@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net"
@@ -31,6 +32,7 @@ type Driver struct {
 	VolumeSizeGB      int
 	AntiAffinityWith  string
 	ServerGroups      []string
+	Volumes           []string
 }
 
 const (
@@ -105,6 +107,11 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 			Usage:  "set the size of the root volume in GB",
 			Value:  defaultVolumeSize,
 		},
+		mcnflag.StringSliceFlag{
+			EnvVar: "CLOUDSCALE_VOLUMES",
+			Name:   "cloudscale-volumes",
+			Usage:  "a list of volumes",
+		},
 		mcnflag.StringFlag{
 			EnvVar: "CLOUDSCALE_ANTI_AFFINITY_WITH",
 			Name:   "cloudscale-anti-affinity-with",
@@ -157,6 +164,7 @@ func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.VolumeSizeGB = flags.Int("cloudscale-volume-size-gb")
 	d.AntiAffinityWith = flags.String("cloudscale-anti-affinity-with")
 	d.ServerGroups = flags.StringSlice("cloudscale-server-groups")
+	d.Volumes = flags.StringSlice("cloudscale-volumes")
 
 	d.SetSwarmConfigFromFlags(flags)
 
@@ -194,6 +202,13 @@ func (d *Driver) Create() error {
 		}
 	}
 
+	var volumes []cloudscale.Volume
+	for _, volume := range d.Volumes {
+		var v cloudscale.Volume
+		json.Unmarshal([]byte(volume), &v)
+		volumes = append(volumes, v)
+	}
+
 	log.Infof("Creating SSH key...")
 
 	if err := ssh.GenerateSSHKey(d.GetSSHKeyPath()); err != nil {
@@ -219,6 +234,7 @@ func (d *Driver) Create() error {
 		VolumeSizeGB:      d.VolumeSizeGB,
 		AntiAffinityWith:  d.AntiAffinityWith,
 		ServerGroups:      d.ServerGroups,
+		Volumes:           &volumes,
 	}
 
 	newServer, err := client.Servers.Create(context.TODO(), createRequest)

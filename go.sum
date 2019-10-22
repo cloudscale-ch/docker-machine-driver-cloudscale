@@ -3,6 +3,9 @@ github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78/go.mod h1:LmzpDX
 github.com/cenkalti/backoff v2.1.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
 github.com/cloudscale-ch/cloudscale-go-sdk v0.0.0-20190523132001-c0ff9b92e8ad h1:pPMRZKYqnwvoucO63TaNIdTc6hRea+3nVRCBykxZ8lw=
 github.com/cloudscale-ch/cloudscale-go-sdk v0.0.0-20190523132001-c0ff9b92e8ad/go.mod h1:FhOTOCgKAVvRRMQc1mC0D7xK/3zYnmcZBWFXNkacvMc=
+github.com/cloudscale-ch/cloudscale-go-sdk v0.0.0-20191015091802-894d6d497c88 h1:gOUcZvveD2Cue4L/C128/oBkL+66odoNY6ug3yH4kgg=
+github.com/cloudscale-ch/cloudscale-go-sdk v0.0.0-20191015091802-894d6d497c88/go.mod h1:FhOTOCgKAVvRRMQc1mC0D7xK/3zYnmcZBWFXNkacvMc=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/docker/docker v0.0.0-20181018193557-f7e5154f37a4 h1:u7P9ul4ElF92ZjxTwdWBgrXAMWXCLLfgceq4hdAMcE4=
 github.com/docker/docker v0.0.0-20181018193557-f7e5154f37a4/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
@@ -11,8 +14,10 @@ github.com/docker/machine v0.16.1/go.mod h1:I8mPNDeK1uH+JTcUU7X0ZW8KiYz0jyAgNaeS
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/konsorten/go-windows-terminal-sequences v0.0.0-20180402223658-b729f2633dfe/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/sirupsen/logrus v1.1.1/go.mod h1:zrgwTnHtNr00buQ1vSptGe8m1f/BbgsPukg8qsT7A+A=
+github.com/stretchr/testify v1.2.2 h1:bSDNvY7ZPG5RlJ8otE/7V6gMiyenm9RtJ7IUVIAoJ1w=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 golang.org/x/crypto v0.0.0-20180904163835-0709b304e793/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e h1:IzypfodbhbnViNUO/MEh0FzCUooG97cIGfdggUrUSyU=

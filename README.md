@@ -98,6 +98,7 @@ $ docker-machine create \
 - `--cloudscale-anti-affinity-with`: the UUID of another server to create an anti-affinity group with that server or add it to the same group as that server.
 - `--cloudscale-userdata`: string containing cloud-init user data
 - `--cloudscale-userdatafile`: path to file with cloud-init user data
+- `--cloudscale-volumes`: string containing [volume](https://www.cloudscale.ch/en/api/v1#volumes) in json format
 
 
 
