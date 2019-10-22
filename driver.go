@@ -25,6 +25,7 @@ type Driver struct {
 	Image             string
 	Flavor            string
 	Region            string
+	UsePublicNetwork  bool
 	UsePrivateNetwork bool
 	UseIPV6           bool
 	UserDataFile      string
@@ -85,6 +86,11 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 			Name:   "cloudscale-flavor",
 			Usage:  "cloudscale.ch flavor",
 			Value:  defaultFlavor,
+		},
+		mcnflag.BoolFlag{
+			EnvVar: "CLOUDSCALE_NO_PUBLIC_NETWORKING",
+			Name:   "cloudscale-no-public-network",
+			Usage:  "disable public networking for a server",
 		},
 		mcnflag.BoolFlag{
 			EnvVar: "CLOUDSCALE_PRIVATE_NETWORKING",
@@ -155,6 +161,7 @@ func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.Image = flags.String("cloudscale-image")
 	d.Region = flags.String("cloudscale-region")
 	d.Flavor = flags.String("cloudscale-flavor")
+	d.UsePublicNetwork = !flags.Bool("cloudscale-no-public-network")
 	d.UsePrivateNetwork = flags.Bool("cloudscale-use-private-network")
 	d.UseIPV6 = flags.Bool("cloudscale-use-ipv6")
 	d.UserDataFile = flags.String("cloudscale-userdatafile")
@@ -223,35 +230,18 @@ func (d *Driver) Create() error {
 
 	client := d.getClient()
 
-	var createRequest *cloudscale.ServerRequest
-
-	if len(volumes) > 0 {
-		createRequest = &cloudscale.ServerRequest{
-			Image:             d.Image,
-			Flavor:            d.Flavor,
-			Name:              d.MachineName,
-			UsePrivateNetwork: &d.UsePrivateNetwork,
-			UseIPV6:           &d.UseIPV6,
-			UserData:          userdata,
-			SSHKeys:           []string{string(publicKey)},
-			VolumeSizeGB:      d.VolumeSizeGB,
-			AntiAffinityWith:  d.AntiAffinityWith,
-			ServerGroups:      d.ServerGroups,
-			Volumes:           &volumes,
-		}
-	} else {
-		createRequest = &cloudscale.ServerRequest{
-			Image:             d.Image,
-			Flavor:            d.Flavor,
-			Name:              d.MachineName,
-			UsePrivateNetwork: &d.UsePrivateNetwork,
-			UseIPV6:           &d.UseIPV6,
-			UserData:          userdata,
-			SSHKeys:           []string{string(publicKey)},
-			VolumeSizeGB:      d.VolumeSizeGB,
-			AntiAffinityWith:  d.AntiAffinityWith,
-			ServerGroups:      d.ServerGroups,
-		}
+	createRequest := &cloudscale.ServerRequest{
+		Image:             d.Image,
+		Flavor:            d.Flavor,
+		Name:              d.MachineName,
+		UsePublicNetwork:  &d.UsePublicNetwork,
+		UsePrivateNetwork: &d.UsePrivateNetwork,
+		UseIPV6:           &d.UseIPV6,
+		UserData:          userdata,
+		SSHKeys:           []string{string(publicKey)},
+		VolumeSizeGB:      d.VolumeSizeGB,
+		AntiAffinityWith:  d.AntiAffinityWith,
+		ServerGroups:      d.ServerGroups,
 	}
 
 	newServer, err := client.Servers.Create(context.TODO(), createRequest)
@@ -262,20 +252,19 @@ func (d *Driver) Create() error {
 	d.UUID = newServer.UUID
 
 	log.Info("Waiting for IP address to be assigned to the Server...")
+
+	interfaceType := "public"
+	if !d.UsePublicNetwork {
+		// use public interface IP unless there is none
+		interfaceType = "private"
+	}
 	for {
 		newServer, err = client.Servers.Get(context.TODO(), d.UUID)
 		if err != nil {
 			return err
 		}
-		for _, interface_ := range newServer.Interfaces {
-			if interface_.Type == "public" {
-				for _, address := range interface_.Adresses {
-					if address.Version == 4 {
-						d.IPAddress = address.Address
-					}
-				}
-			}
-		}
+
+		d.IPAddress = GetIP(newServer, interfaceType)
 
 		if d.IPAddress != "" {
 			break
@@ -359,4 +348,17 @@ func (d *Driver) getClient() *cloudscale.Client {
 
 func (d *Driver) publicSSHKeyPath() string {
 	return d.GetSSHKeyPath() + ".pub"
+}
+
+func GetIP(server *cloudscale.Server, forInterfacetype string) string {
+	for _, interface_ := range server.Interfaces {
+		if interface_.Type == forInterfacetype {
+			for _, address := range interface_.Adresses {
+				if address.Version == 4 {
+					return address.Address
+				}
+			}
+		}
+	}
+	return ""
 }
