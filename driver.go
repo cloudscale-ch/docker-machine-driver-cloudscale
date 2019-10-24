@@ -230,18 +230,35 @@ func (d *Driver) Create() error {
 
 	client := d.getClient()
 
-	createRequest := &cloudscale.ServerRequest{
-		Image:             d.Image,
-		Flavor:            d.Flavor,
-		Name:              d.MachineName,
-		UsePublicNetwork:  &d.UsePublicNetwork,
-		UsePrivateNetwork: &d.UsePrivateNetwork,
-		UseIPV6:           &d.UseIPV6,
-		UserData:          userdata,
-		SSHKeys:           []string{string(publicKey)},
-		VolumeSizeGB:      d.VolumeSizeGB,
-		AntiAffinityWith:  d.AntiAffinityWith,
-		ServerGroups:      d.ServerGroups,
+	var createRequest *cloudscale.ServerRequest
+
+	if len(volumes) > 0 {
+		createRequest = &cloudscale.ServerRequest{
+			Image:             d.Image,
+			Flavor:            d.Flavor,
+			Name:              d.MachineName,
+			UsePrivateNetwork: &d.UsePrivateNetwork,
+			UseIPV6:           &d.UseIPV6,
+			UserData:          userdata,
+			SSHKeys:           []string{string(publicKey)},
+			VolumeSizeGB:      d.VolumeSizeGB,
+			AntiAffinityWith:  d.AntiAffinityWith,
+			ServerGroups:      d.ServerGroups,
+			Volumes:           &volumes,
+		}
+	} else {
+		createRequest = &cloudscale.ServerRequest{
+			Image:             d.Image,
+			Flavor:            d.Flavor,
+			Name:              d.MachineName,
+			UsePrivateNetwork: &d.UsePrivateNetwork,
+			UseIPV6:           &d.UseIPV6,
+			UserData:          userdata,
+			SSHKeys:           []string{string(publicKey)},
+			VolumeSizeGB:      d.VolumeSizeGB,
+			AntiAffinityWith:  d.AntiAffinityWith,
+			ServerGroups:      d.ServerGroups,
+		}
 	}
 
 	newServer, err := client.Servers.Create(context.TODO(), createRequest)
