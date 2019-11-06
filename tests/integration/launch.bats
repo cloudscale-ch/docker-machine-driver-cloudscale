@@ -93,7 +93,7 @@ function teardown() {
 
   # assert
   [ "$disk" = "13G" ]
-  [ "$mem" = "MemTotal: 2041232 kB" ]
+  [ "$mem" = "MemTotal: 2041248 kB" ]
 }
 
 
