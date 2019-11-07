@@ -3,6 +3,8 @@ github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78/go.mod h1:LmzpDX
 github.com/cenkalti/backoff v2.1.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
 github.com/cloudscale-ch/cloudscale-go-sdk v0.0.0-20190523132001-c0ff9b92e8ad h1:pPMRZKYqnwvoucO63TaNIdTc6hRea+3nVRCBykxZ8lw=
 github.com/cloudscale-ch/cloudscale-go-sdk v0.0.0-20190523132001-c0ff9b92e8ad/go.mod h1:FhOTOCgKAVvRRMQc1mC0D7xK/3zYnmcZBWFXNkacvMc=
+github.com/cloudscale-ch/cloudscale-go-sdk v1.0.0 h1:tX04ghZf2RYPbT4eCD9CZ6qhhGUUzNJ/hL8TUjpFt2A=
+github.com/cloudscale-ch/cloudscale-go-sdk v1.0.0/go.mod h1:FhOTOCgKAVvRRMQc1mC0D7xK/3zYnmcZBWFXNkacvMc=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/docker/docker v0.0.0-20181018193557-f7e5154f37a4 h1:u7P9ul4ElF92ZjxTwdWBgrXAMWXCLLfgceq4hdAMcE4=
 github.com/docker/docker v0.0.0-20181018193557-f7e5154f37a4/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
