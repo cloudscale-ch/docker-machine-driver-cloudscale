@@ -339,7 +339,7 @@ func GetIP(server *cloudscale.Server, forInterfacetype string) string {
 	for _, interface_ := range server.Interfaces {
 		if interface_.Type == forInterfacetype {
 			for _, address := range interface_.Adresses {
-				if address.Version == 4 {
+				if address.Version == 6 {
 					return address.Address
 				}
 			}
