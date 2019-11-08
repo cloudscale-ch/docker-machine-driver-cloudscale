@@ -37,7 +37,7 @@ function teardown() {
 }
 
 
- launch a machine and deploy nginx" {
+@test "launch a machine and deploy nginx" {
   # pre-condition
   load ./assert_no_server
 
