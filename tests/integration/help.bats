@@ -7,8 +7,8 @@
   # assert
   echo "$output" | grep 'cloudscale-anti-affinity-with'
   echo "$output" | grep 'cloudscale-flavor "flex-4"'
+  echo "$output" | grep 'cloudscale-zone'
   echo "$output" | grep 'cloudscale-image "ubuntu-18.04"'
-  echo "$output" | grep 'cloudscale-region'
   echo "$output" | grep 'cloudscale-server-groups'
   echo "$output" | grep 'cloudscale-ssh-key-path'
   echo "$output" | grep 'cloudscale-ssh-port "22"'

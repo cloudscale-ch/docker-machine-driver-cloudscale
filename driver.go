@@ -23,7 +23,7 @@ type Driver struct {
 	UUID              string
 	Image             string
 	Flavor            string
-	Region            string
+	Zone              string
 	UsePublicNetwork  bool
 	UsePrivateNetwork bool
 	UseIPV6           bool
@@ -75,15 +75,15 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 			Value:  defaultImage,
 		},
 		mcnflag.StringFlag{
-			EnvVar: "CLOUDSCALE_REGION",
-			Name:   "cloudscale-region",
-			Usage:  "cloudscale.ch region",
-		},
-		mcnflag.StringFlag{
 			EnvVar: "CLOUDSCALE_FLAVOR",
 			Name:   "cloudscale-flavor",
 			Usage:  "cloudscale.ch flavor",
 			Value:  defaultFlavor,
+		},
+		mcnflag.StringFlag{
+			EnvVar: "CLOUDSCALE_ZONE",
+			Name:   "cloudscale-zone",
+			Usage:  "cloudscale.ch zone",
 		},
 		mcnflag.BoolFlag{
 			EnvVar: "CLOUDSCALE_NO_PUBLIC_NETWORKING",
@@ -152,8 +152,8 @@ func (d *Driver) DriverName() string {
 func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.APIToken = flags.String("cloudscale-token")
 	d.Image = flags.String("cloudscale-image")
-	d.Region = flags.String("cloudscale-region")
 	d.Flavor = flags.String("cloudscale-flavor")
+	d.Zone = flags.String("cloudscale-zone")
 	d.UsePublicNetwork = !flags.Bool("cloudscale-no-public-network")
 	d.UsePrivateNetwork = flags.Bool("cloudscale-use-private-network")
 	d.UseIPV6 = flags.Bool("cloudscale-use-ipv6")
@@ -218,6 +218,7 @@ func (d *Driver) Create() error {
 	createRequest := &cloudscale.ServerRequest{
 		Image:             d.Image,
 		Flavor:            d.Flavor,
+		Zone:              d.Zone,
 		Name:              d.MachineName,
 		UsePublicNetwork:  &d.UsePublicNetwork,
 		UsePrivateNetwork: &d.UsePrivateNetwork,
