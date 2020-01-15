@@ -370,7 +370,7 @@ func (d *Driver) publicSSHKeyPath() string {
 func GetIP(server *cloudscale.Server, forInterfacetype string) string {
 	for _, interface_ := range server.Interfaces {
 		if interface_.Type == forInterfacetype {
-			for _, address := range interface_.Adresses {
+			for _, address := range interface_.Addresses {
 				if address.Version == 4 {
 					return address.Address
 				}
