@@ -98,11 +98,12 @@ $ docker-machine create \
 - `--cloudscale-no-public-network`: Disables the public network interface.
 - `--cloudscale-use-private-network`: Enables the private network interface.
 - `--cloudscale-use-ipv6`: Enables IPv6 on public network interface.
-- `--cloudscale-server-groups`: the UUIDs identifying the [server groups](https://www.cloudscale.ch/en/api/v1#server-groups) to which the new server will be added.
+- `--cloudscale-server-groups`: the UUID identifying the [server group](https://www.cloudscale.ch/en/api/v1#server-groups) to which the new server will be added, option can be repeated.
 - `--cloudscale-anti-affinity-with`: the UUID of another server to create an anti-affinity group with that server or add it to the same group as that server.
 - `--cloudscale-userdata`: string containing cloud-init user data
 - `--cloudscale-userdatafile`: path to file with cloud-init user data
-- `--cloudscale-volumes`: string containing [volume](https://www.cloudscale.ch/en/api/v1#volumes) in json format
+- `--cloudscale-volume-ssd`: size of an additional [SSD volume](https://www.cloudscale.ch/en/api/v1#volumes) to be attached to the server, option can be repeated.
+- `--cloudscale-volume-bulk`: size of an additional [bulk volume](https://www.cloudscale.ch/en/api/v1#volumes) to be attached to the server, option can be repeated.
 
 
 

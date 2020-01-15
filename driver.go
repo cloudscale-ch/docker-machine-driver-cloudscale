@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net"
 	"os"
+	"strconv"
 	"time"
 
 	cloudscale "github.com/cloudscale-ch/cloudscale-go-sdk"
@@ -33,7 +33,8 @@ type Driver struct {
 	VolumeSizeGB      int
 	AntiAffinityWith  string
 	ServerGroups      []string
-	Volumes           []string
+	SSDVolumes        []string
+	BulkVolumes       []string
 }
 
 const (
@@ -114,9 +115,14 @@ func (d *Driver) GetCreateFlags() []mcnflag.Flag {
 			Value:  defaultVolumeSize,
 		},
 		mcnflag.StringSliceFlag{
-			EnvVar: "CLOUDSCALE_VOLUMES",
-			Name:   "cloudscale-volumes",
-			Usage:  "a list of volumes",
+			EnvVar: "CLOUDSCALE_VOLUME_SSD",
+			Name:   "cloudscale-volume-ssd",
+			Usage:  "size of an additional SSD volume to be attached to the server",
+		},
+		mcnflag.StringSliceFlag{
+			EnvVar: "CLOUDSCALE_VOLUME_BULK",
+			Name:   "cloudscale-volume-bulk",
+			Usage:  "size of an additional bulk volume to be attached to the server",
 		},
 		mcnflag.StringFlag{
 			EnvVar: "CLOUDSCALE_ANTI_AFFINITY_WITH",
@@ -171,7 +177,8 @@ func (d *Driver) SetConfigFromFlags(flags drivers.DriverOptions) error {
 	d.VolumeSizeGB = flags.Int("cloudscale-volume-size-gb")
 	d.AntiAffinityWith = flags.String("cloudscale-anti-affinity-with")
 	d.ServerGroups = flags.StringSlice("cloudscale-server-groups")
-	d.Volumes = flags.StringSlice("cloudscale-volumes")
+	d.SSDVolumes = flags.StringSlice("cloudscale-volume-ssd")
+	d.BulkVolumes = flags.StringSlice("cloudscale-volume-bulk")
 
 	d.SetSwarmConfigFromFlags(flags)
 
@@ -209,12 +216,16 @@ func (d *Driver) Create() error {
 		}
 	}
 
-	var volumes []cloudscale.Volume
-	for _, volume := range d.Volumes {
-		var v cloudscale.Volume
-		json.Unmarshal([]byte(volume), &v)
-		volumes = append(volumes, v)
+	volumes := make([]cloudscale.Volume, 0, len(d.SSDVolumes)+len(d.BulkVolumes))
+	ssdVolumes, err := processVolumes("ssd", d.SSDVolumes)
+	if err != nil {
+		return err
 	}
+	bulkVolumes, err := processVolumes("bulk", d.BulkVolumes)
+	if err != nil {
+		return err
+	}
+	volumes = append(ssdVolumes, bulkVolumes...)
 
 	log.Infof("Creating SSH key...")
 
@@ -230,39 +241,25 @@ func (d *Driver) Create() error {
 
 	client := d.getClient()
 
-	var createRequest *cloudscale.ServerRequest
-
-	if len(volumes) > 0 {
-		createRequest = &cloudscale.ServerRequest{
-			Image:             d.Image,
-			Flavor:            d.Flavor,
-			Zone:              d.Zone,Name:              d.MachineName,
-			UsePrivateNetwork: &d.UsePrivateNetwork,
-			UseIPV6:           &d.UseIPV6,
-			UserData:          userdata,
-			SSHKeys:           []string{string(publicKey)},
-			VolumeSizeGB:      d.VolumeSizeGB,
-			AntiAffinityWith:  d.AntiAffinityWith,
-			ServerGroups:      d.ServerGroups,
-			Volumes:           &volumes,
-		}
-	} else {
-		createRequest = &cloudscale.ServerRequest{
-			Image:             d.Image,
-			Flavor:            d.Flavor,
-			Name:              d.MachineName,
-			UsePrivateNetwork: &d.UsePrivateNetwork,
-			UseIPV6:           &d.UseIPV6,
-			UserData:          userdata,
-			SSHKeys:           []string{string(publicKey)},
-			VolumeSizeGB:      d.VolumeSizeGB,
-			AntiAffinityWith:  d.AntiAffinityWith,
-			ServerGroups:      d.ServerGroups,
-		}
+	createRequest := &cloudscale.ServerRequest{
+		Image:             d.Image,
+		Flavor:            d.Flavor,
+		Zone:              d.Zone,
+		Name:              d.MachineName,
+		UsePublicNetwork:  &d.UsePublicNetwork,
+		UsePrivateNetwork: &d.UsePrivateNetwork,
+		UseIPV6:           &d.UseIPV6,
+		UserData:          userdata,
+		SSHKeys:           []string{string(publicKey)},
+		VolumeSizeGB:      d.VolumeSizeGB,
+		AntiAffinityWith:  d.AntiAffinityWith,
+		ServerGroups:      d.ServerGroups,
+		Volumes:           &volumes,
 	}
 
 	newServer, err := client.Servers.Create(context.TODO(), createRequest)
 	if err != nil {
+		log.Errorf("%#v", err)
 		return err
 	}
 
@@ -295,6 +292,22 @@ func (d *Driver) Create() error {
 		d.IPAddress)
 
 	return nil
+}
+
+func processVolumes(volumeType string, volumesList []string) ([]cloudscale.Volume, error) {
+	result := make([]cloudscale.Volume, 0, len(volumesList))
+	for _, volume := range volumesList {
+		i, err := strconv.Atoi(volume)
+		if err != nil {
+			return nil, err
+		}
+		v := cloudscale.Volume{
+			Type:   volumeType,
+			SizeGB: i,
+		}
+		result = append(result, v)
+	}
+	return result, nil
 }
 
 func (d *Driver) GetURL() (string, error) {

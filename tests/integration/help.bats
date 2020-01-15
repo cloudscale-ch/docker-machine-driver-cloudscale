@@ -20,5 +20,7 @@
   echo "$output" | grep 'cloudscale-userdata[[:space:]]'
   echo "$output" | grep 'cloudscale-userdatafile'
   echo "$output" | grep 'cloudscale-volume-size-gb "10"'
+  echo "$output" | grep 'cloudscale-volume-bulk'
+  echo "$output" | grep 'cloudscale-volume-ssd'
 }
 

@@ -17,3 +17,4 @@ vendor
 # IntelliJ
 .idea
 docker-machine-driver-cloudscale.iml
+docker-machine-driver-cloudscale
