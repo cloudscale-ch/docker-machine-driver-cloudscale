@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78
-	github.com/cloudscale-ch/cloudscale-go-sdk v0.0.0-20191015091802-894d6d497c88
+	github.com/cloudscale-ch/cloudscale-go-sdk v1.0.0
 	github.com/docker/docker v0.0.0-20181018193557-f7e5154f37a4
 	github.com/docker/machine v0.16.1
 	github.com/golang/protobuf v1.2.0

@@ -21,19 +21,43 @@ function teardown() {
 }
 
 
-@test "test launch a machine and ping" {
+@test "test launch a machine and ping in rma1" {
   # pre-condition
   load ./assert_no_server
 
   # act
-  run docker-machine create --driver cloudscale $MACHINE_NAME
+  run docker-machine create --driver cloudscale --cloudscale-zone rma1 $MACHINE_NAME
 
   # assert
   [ "$status" -eq 0 ]
 
   result="$(docker-machine ip $MACHINE_NAME)"
   ping -c 3 $result
+
+  docker-machine ssh $MACHINE_NAME 'apt-get install -y jq'
+  availability_zone="$(docker-machine ssh $MACHINE_NAME "curl -sS http://169.254.169.254/openstack/latest/meta_data.json | jq '.availability_zone'")"
+  [[ $availability_zone == "\"rma1\"" ]]
 }
+
+
+@test "test launch a machine and ping in lpg1" {
+  # pre-condition
+  load ./assert_no_server
+
+  # act
+  run docker-machine create --driver cloudscale --cloudscale-zone lpg1 $MACHINE_NAME
+
+  # assert
+  [ "$status" -eq 0 ]
+
+  result="$(docker-machine ip $MACHINE_NAME)"
+  ping -c 3 $result
+
+  docker-machine ssh $MACHINE_NAME 'apt-get install -y jq'
+  availability_zone="$(docker-machine ssh $MACHINE_NAME "curl -sS http://169.254.169.254/openstack/latest/meta_data.json | jq '.availability_zone'")"
+  [[ $availability_zone == "\"lpg1\"" ]]
+}
+
 
 
 @test "test launch a machine and remove gracefully" {
@@ -93,7 +117,7 @@ function teardown() {
 
   # assert
   [ "$disk" = "13G" ]
-  [ "$mem" = "MemTotal: 2041232 kB" ]
+  [ "$mem" = "MemTotal: 2041248 kB" ]
 }
 
 
