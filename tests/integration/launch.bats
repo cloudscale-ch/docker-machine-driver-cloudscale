@@ -182,3 +182,20 @@ write_files:
   # assert
   [ "$interfaces" = "docker0, ens3, ens4, lo" ]
 }
+
+
+@test "test launch a machine with additional volumes" {
+  # pre-condition
+  load ./assert_no_server
+
+  # act
+  run docker-machine create --driver cloudscale --cloudscale-volume-ssd 1 --cloudscale-volume-ssd 2 --cloudscale-volume-bulk 100 $MACHINE_NAME
+  disk="$(docker-machine ssh $MACHINE_NAME 'lsblk -ndr -o size')"
+
+  # assert
+  [ "$disk" = $'10G\n1G\n2G\n100G' ]
+
+  # remove here, to ensure test case fails if volumes cannot be deleted
+  run docker-machine rm -y $MACHINE_NAME
+  [ "$status" -eq 0 ]
+}
