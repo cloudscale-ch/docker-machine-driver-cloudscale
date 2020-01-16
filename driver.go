@@ -358,10 +358,20 @@ func (d *Driver) Kill() error {
 }
 
 func (d *Driver) Remove() error {
+	server, err := d.getClient().Servers.Get(context.TODO(), d.UUID)
+	if err != nil {
+		return err
+	}
 	if err := d.getClient().Servers.Delete(context.TODO(), d.UUID); err != nil {
 		if err, ok := err.(*cloudscale.ErrorResponse); ok && err.StatusCode == 404 {
 			log.Infof("cloudscale.ch server doesn't exist, assuming it is already deleted")
 		} else {
+			return err
+		}
+	}
+	// delete all but root volume
+	for _, volume := range server.Volumes[1:] {
+		if err = d.getClient().Volumes.Delete(context.Background(), volume.UUID); err != nil {
 			return err
 		}
 	}
