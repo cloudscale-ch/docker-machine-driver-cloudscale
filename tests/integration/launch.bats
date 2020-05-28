@@ -116,7 +116,7 @@ function teardown() {
   mem="$(docker-machine ssh "$MACHINE_NAME" 'grep MemTotal /proc/meminfo | tr -s " "')"
 
   # assert
-  [ "$disk" = "13G" ]
+  echo $disk | grep '13G'
   [ "$mem" = "MemTotal: 2041248 kB" ]
 }
 
