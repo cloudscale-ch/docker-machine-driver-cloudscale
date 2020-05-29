@@ -116,7 +116,7 @@ function teardown() {
   mem="$(docker-machine ssh "$MACHINE_NAME" 'grep MemTotal /proc/meminfo | tr -s " "')"
 
   # assert
-  [ "$disk" = "13G" ]
+  echo $disk | grep '13G'
   [ "$mem" = "MemTotal: 2041248 kB" ]
 }
 
@@ -193,7 +193,10 @@ write_files:
   disk="$(docker-machine ssh "$MACHINE_NAME" 'lsblk -ndr -o size')"
 
   # assert
-  [ "$disk" = $'10G\n1G\n2G\n100G' ]
+  echo $disk | grep '10G'
+  echo $disk | grep '1G'
+  echo $disk | grep '2G'
+  echo $disk | grep '100G'
 
   # remove here, to ensure test case fails if volumes cannot be deleted
   run docker-machine rm -y "$MACHINE_NAME"
