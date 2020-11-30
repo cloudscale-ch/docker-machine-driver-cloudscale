@@ -25,9 +25,6 @@ jobs:
         - if [ -z "$CLOUDSCALE_TOKEN" ]; then exit 0; fi
         - bats tests/integration/launch.bats
       env:
-        - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.0"
-    - <<: *integration
-      env:
         - BASE_DOWNLOAD_URL="https://github.com/docker/machine/releases/download/v0.16.2"
 
     - stage: Deployment
