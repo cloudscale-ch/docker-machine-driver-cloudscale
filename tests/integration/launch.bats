@@ -117,7 +117,7 @@ function teardown() {
 
   # assert
   echo $disk | grep '13G'
-  [ "$mem" = "MemTotal: 2035420 kB" ]
+  [ "$mem" = "MemTotal: 2040900 kB" ]
 }
 
 
