@@ -5,6 +5,7 @@ RAND=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 8 | head -n 1)
 PREFIX='docker-machine-integration-test-'
 MACHINE_NAME=$PREFIX$RAND
 
+ENGINE_INSTALL_URL='https://releases.rancher.com/install-docker/19.03.14.sh'
 
 function setup() {
   if [ -z "$CLOUDSCALE_TOKEN" ]
@@ -26,7 +27,7 @@ function teardown() {
   load ./assert_no_server
 
   # act
-  run docker-machine create --driver cloudscale --cloudscale-zone rma1 "$MACHINE_NAME"
+  run docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-zone rma1 "$MACHINE_NAME"
 
   # assert
   [ "$status" -eq 0 ]
@@ -45,7 +46,7 @@ function teardown() {
   load ./assert_no_server
 
   # act
-  run docker-machine create --driver cloudscale --cloudscale-zone lpg1 "$MACHINE_NAME"
+  run docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-zone lpg1 "$MACHINE_NAME"
 
   # assert
   [ "$status" -eq 0 ]
@@ -65,7 +66,7 @@ function teardown() {
   load ./assert_no_server
 
   # act
-  docker-machine create --driver cloudscale "$MACHINE_NAME"
+  docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" "$MACHINE_NAME"
   run docker-machine rm -y "$MACHINE_NAME"
 
   # assert
@@ -78,7 +79,7 @@ function teardown() {
   load ./assert_no_server
 
   # act & assert
-  docker-machine create --driver cloudscale "$MACHINE_NAME"
+  docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" "$MACHINE_NAME"
 
   docker-machine stop "$MACHINE_NAME"
   count="$(docker-machine ls -q --filter state=stopped --filter name="$MACHINE_NAME" | wc -l)"
@@ -95,7 +96,7 @@ function teardown() {
   load ./assert_no_server
 
   # act
-  docker-machine create --driver cloudscale "$MACHINE_NAME"
+  docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" "$MACHINE_NAME"
   eval "$(docker-machine env "$MACHINE_NAME")"
   docker run --detach -p 80:80 nginx
 
@@ -111,7 +112,7 @@ function teardown() {
   load ./assert_no_server
 
   # act
-  docker-machine create --driver cloudscale --cloudscale-flavor flex-2 --cloudscale-volume-size-gb 13 "$MACHINE_NAME"
+  docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-flavor flex-2 --cloudscale-volume-size-gb 13 "$MACHINE_NAME"
   disk="$(docker-machine ssh "$MACHINE_NAME" 'lsblk -ndr -o size')"
   mem="$(docker-machine ssh "$MACHINE_NAME" 'grep MemTotal /proc/meminfo | tr -s " "')"
 
@@ -133,7 +134,7 @@ write_files:
       my userdatafile" >> test_user_data.yaml
 
   # act
-  docker-machine create --driver cloudscale --cloudscale-userdatafile test_user_data.yaml "$MACHINE_NAME"
+  docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-userdatafile test_user_data.yaml "$MACHINE_NAME"
   actual="$(docker-machine ssh "$MACHINE_NAME" 'cat /test.txt')"
 
   # assert
@@ -149,7 +150,7 @@ write_files:
   TEST_USER_DATA="#cloud-config\nwrite_files:\n  - path: /test.txt\n    content: |\n      my cli user-data test\n"
 
   # act
-  docker-machine create --driver cloudscale --cloudscale-userdata "$(echo -e "$TEST_USER_DATA")" "$MACHINE_NAME"
+  docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-userdata "$(echo -e "$TEST_USER_DATA")" "$MACHINE_NAME"
   actual="$(docker-machine ssh "$MACHINE_NAME" 'cat /test.txt')"
 
   # assert
@@ -162,7 +163,7 @@ write_files:
   load ./assert_no_server
 
   # act
-  run docker-machine create --driver cloudscale --cloudscale-userdata astring --cloudscale-userdatafile afile wontwork
+  run docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-userdata astring --cloudscale-userdatafile afile wontwork
 
   # assert
   [ "$status" -eq 3 ]
@@ -175,7 +176,7 @@ write_files:
   load ./assert_no_server
 
   # act
-  run docker-machine create --driver cloudscale --cloudscale-use-private-network "$MACHINE_NAME"
+  run docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-use-private-network "$MACHINE_NAME"
   interfaces="$(docker-machine ssh "$MACHINE_NAME" 'ls -m /sys/class/net')"
 
 
@@ -189,7 +190,7 @@ write_files:
   load ./assert_no_server
 
   # act
-  run docker-machine create --driver cloudscale --cloudscale-volume-ssd 1 --cloudscale-volume-ssd 2 --cloudscale-volume-bulk 100 "$MACHINE_NAME"
+  run docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-volume-ssd 1 --cloudscale-volume-ssd 2 --cloudscale-volume-bulk 100 "$MACHINE_NAME"
   disk="$(docker-machine ssh "$MACHINE_NAME" 'lsblk -ndr -o size')"
 
   # assert
