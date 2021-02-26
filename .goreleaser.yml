@@ -1,0 +1,5 @@
+builds:
+  - flags: -mod=vendor
+    ignore:
+      - goos: linux
+        goarch: 386
