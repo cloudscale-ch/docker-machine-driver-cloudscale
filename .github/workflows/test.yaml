@@ -65,7 +65,7 @@ jobs:
           curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine
           sudo install /tmp/docker-machine /usr/local/bin/docker-machine
 
-      - name: integration-tests
+      - name: Run integration tests
         shell: bash
         timeout-minutes: 120
         env:
