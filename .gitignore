@@ -11,9 +11,6 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# we don't want to include the source files of the dependencies
-vendor
-
 # IntelliJ
 .idea
 docker-machine-driver-cloudscale.iml
