@@ -54,8 +54,8 @@ jobs:
 
       - name: Install ping command
         run: |
-          apt-get update
-          apt-get install iputils-ping
+          sudo apt-get update
+          sudo apt-get install iputils-ping
 
       - name: Setup docker-machine
         env:
