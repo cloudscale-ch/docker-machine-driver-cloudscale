@@ -1,7 +1,6 @@
 #!/usr/bin/env bats
 
-# requries export LC_CTYPE=C on macOS
-RAND=$(LC_ALL=C tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 8 | head -n 1)
+RAND=$(shuf -i 100000-900000 -n 1)
 PREFIX='docker-machine-integration-test-'
 MACHINE_NAME=$PREFIX$RAND
 SHELL=bash
@@ -19,7 +18,7 @@ function setup() {
 
 function teardown() {
   docker-machine rm -f "$MACHINE_NAME"
-  docker-machine env --unset
+  eval "$(docker-machine env --shell bash --unset)"
 }
 
 
@@ -98,7 +97,7 @@ function teardown() {
 
   # act
   docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" "$MACHINE_NAME"
-  eval "$(docker-machine env "$MACHINE_NAME")"
+  eval "$(docker-machine env --shell bash  "$MACHINE_NAME")"
   docker run --detach -p 80:80 nginx
 
 
