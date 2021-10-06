@@ -10,3 +10,7 @@ vendor:
 .PHONY: snapshot
 snapshot:
 	@goreleaser release --snapshot --rm-dist
+
+.PHONY: integration
+integration:
+	bats tests/integration

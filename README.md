@@ -133,13 +133,12 @@ $ make snapshot
 In order to run the integration test suite, please make sure that:
 
   1. `docker`, `docker-machine` and `docker-machine-driver-cloudscale` are available in your `$PATH`
-  1. [BATS](https://github.com/sstephenson/bats#installing-bats-from-source) is available in your `$PATH`
-  1. You have run `export LC_CTYPE=C` on macOS
+  1. [bats-core](https://github.com/bats-core/bats-core) is available in your `$PATH`
   1. Your cloudscale.ch API Token is exported as `CLOUDSCALE_TOKEN`
   
 If all of the above is fullfilled, invoke the test suite by calling:
 
-`bats tests/integration`
+`make integration`
 
 
 ## Credits

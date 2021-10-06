@@ -1,9 +1,10 @@
 #!/usr/bin/env bats
 
 # requries export LC_CTYPE=C on macOS
-RAND=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 8 | head -n 1)
+RAND=$(LC_ALL=C tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 8 | head -n 1)
 PREFIX='docker-machine-integration-test-'
 MACHINE_NAME=$PREFIX$RAND
+SHELL=bash
 
 ENGINE_INSTALL_URL='https://releases.rancher.com/install-docker/19.03.14.sh'
 

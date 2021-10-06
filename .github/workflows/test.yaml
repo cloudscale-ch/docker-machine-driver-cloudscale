@@ -1,0 +1,76 @@
+name: tests
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+  schedule:
+    - cron: '13 13 * * *'
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+
+      - name: Build
+        run: |
+          make build
+
+  integration:
+    name: integration
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+
+      - name: Setup BATS
+        uses: mig4/setup-bats@v1
+        with:
+          bats-version: 1.4.1
+
+      - name: Build
+        run: |
+          make build
+
+      - name: Install ping command
+        run: |
+          apt-get update
+          apt-get install iputils-ping
+
+      - name: Setup docker-machine
+        env:
+          BASE_DOWNLOAD_URL: "https://github.com/docker/machine/releases/download/v0.16.2"
+        run: |
+          base=$BASE_DOWNLOAD_URL
+          curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine
+          sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+
+      - name: integration-tests
+        shell: bash
+        timeout-minutes: 120
+        env:
+          CLOUDSCALE_TOKEN: ${{ secrets.CLOUDSCALE_TOKEN }}
+        if: env.CLOUDSCALE_TOKEN != null
+
+        run: |
+          PATH="$PATH:$PWD/bin" make integration
