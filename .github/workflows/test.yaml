@@ -26,9 +26,27 @@ jobs:
         run: |
           make build
 
+  check-integration:
+    # What we want to achieve here is that the integration job is only started
+    # if CLOUDSCALE_TOKEN secret is present. However, Github Actions does not
+    # allow starting jobs conditionally, if a secret is present.
+    # Hence, we use the following workaround:
+    # https://github.com/actions/runner/issues/520#issuecomment-907770967
+    name: check-integration
+    runs-on: ubuntu-latest
+    outputs:
+      cloudscale_token_defined: ${{ steps.cloudscale_token_check.outputs.defined }}
+    steps:
+      - id: cloudscale_token_check
+        env:
+          CLOUDSCALE_TOKEN: ${{ secrets.CLOUDSCALE_TOKEN }}
+        if: "${{ env.CLOUDSCALE_TOKEN != '' }}"
+        run: echo "::set-output name=defined::true"
+
   integration:
     name: integration
-    needs: build
+    needs: [check-integration, build]
+    if: needs.check-integration.outputs.cloudscale_token_defined == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 120
 
@@ -65,7 +83,6 @@ jobs:
         timeout-minutes: 120
         env:
           CLOUDSCALE_TOKEN: ${{ secrets.CLOUDSCALE_TOKEN }}
-        if: env.CLOUDSCALE_TOKEN != null
 
         run: |
           PATH="$PATH:$PWD/bin" make integration
