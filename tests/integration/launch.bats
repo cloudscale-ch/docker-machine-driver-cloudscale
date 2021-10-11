@@ -1,9 +1,9 @@
 #!/usr/bin/env bats
 
-# requries export LC_CTYPE=C on macOS
-RAND=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 8 | head -n 1)
+RAND=$(shuf -i 100000-900000 -n 1)
 PREFIX='docker-machine-integration-test-'
 MACHINE_NAME=$PREFIX$RAND
+SHELL=bash
 
 ENGINE_INSTALL_URL='https://releases.rancher.com/install-docker/19.03.14.sh'
 
@@ -18,11 +18,11 @@ function setup() {
 
 function teardown() {
   docker-machine rm -f "$MACHINE_NAME"
-  docker-machine env --unset
+  eval "$(docker-machine env --shell bash --unset)"
 }
 
 
-@test "test launch a machine and ping in rma1" {
+@test "test launch a machine and verify meta_data in rma1" {
   # pre-condition
   load ./assert_no_server
 
@@ -30,18 +30,13 @@ function teardown() {
   run docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-zone rma1 "$MACHINE_NAME"
 
   # assert
-  [ "$status" -eq 0 ]
-
-  result="$(docker-machine ip "$MACHINE_NAME")"
-  ping -c 3 "$result"
-
   docker-machine ssh "$MACHINE_NAME" 'apt-get install -y jq'
   availability_zone="$(docker-machine ssh "$MACHINE_NAME" "curl -sS http://169.254.169.254/openstack/latest/meta_data.json | jq '.availability_zone'")"
   [[ $availability_zone == "\"rma1\"" ]]
 }
 
 
-@test "test launch a machine and ping in lpg1" {
+@test "test launch a machine and verify meta_data in lpg1" {
   # pre-condition
   load ./assert_no_server
 
@@ -49,11 +44,6 @@ function teardown() {
   run docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-zone lpg1 "$MACHINE_NAME"
 
   # assert
-  [ "$status" -eq 0 ]
-
-  result="$(docker-machine ip "$MACHINE_NAME")"
-  ping -c 3 "$result"
-
   docker-machine ssh "$MACHINE_NAME" 'apt-get install -y jq'
   availability_zone="$(docker-machine ssh "$MACHINE_NAME" "curl -sS http://169.254.169.254/openstack/latest/meta_data.json | jq '.availability_zone'")"
   [[ $availability_zone == "\"lpg1\"" ]]
@@ -97,7 +87,7 @@ function teardown() {
 
   # act
   docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" "$MACHINE_NAME"
-  eval "$(docker-machine env "$MACHINE_NAME")"
+  eval "$(docker-machine env --shell bash  "$MACHINE_NAME")"
   docker run --detach -p 80:80 nginx
 
 
@@ -118,7 +108,7 @@ function teardown() {
 
   # assert
   echo $disk | grep '13G'
-  [ "$mem" = "MemTotal: 2040900 kB" ]
+  [ "$mem" = "MemTotal: 2040848 kB" ]
 }
 
 

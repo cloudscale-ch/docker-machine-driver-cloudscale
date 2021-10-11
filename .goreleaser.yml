@@ -1,0 +1,7 @@
+builds:
+  - flags: -mod=vendor
+    ignore:
+      - goos: linux
+        goarch: 386
+release:
+  prerelease: auto
