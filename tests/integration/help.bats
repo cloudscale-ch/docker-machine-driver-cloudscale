@@ -6,7 +6,7 @@
 
   # assert
   echo "$output" | grep 'cloudscale-anti-affinity-with'
-  echo "$output" | grep 'cloudscale-flavor "flex-4"'
+  echo "$output" | grep 'cloudscale-flavor "flex-8-4"'
   echo "$output" | grep 'cloudscale-zone'
   echo "$output" | grep 'cloudscale-image "ubuntu-18.04"'
   echo "$output" | grep 'cloudscale-server-groups'

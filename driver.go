@@ -41,7 +41,7 @@ const (
 	defaultSSHPort    = 22
 	defaultSSHUser    = "root"
 	defaultImage      = "ubuntu-18.04"
-	defaultFlavor     = "flex-4"
+	defaultFlavor     = "flex-8-4"
 	defaultVolumeSize = 10
 )
 

@@ -102,13 +102,13 @@ function teardown() {
   load ./assert_no_server
 
   # act
-  docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-flavor flex-2 --cloudscale-volume-size-gb 13 "$MACHINE_NAME"
+  docker-machine create --driver cloudscale --engine-install-url "$ENGINE_INSTALL_URL" --cloudscale-flavor flex-8-2 --cloudscale-volume-size-gb 13 "$MACHINE_NAME"
   disk="$(docker-machine ssh "$MACHINE_NAME" 'lsblk -ndr -o size')"
   mem="$(docker-machine ssh "$MACHINE_NAME" 'grep MemTotal /proc/meminfo | tr -s " "')"
 
   # assert
   echo $disk | grep '13G'
-  [ "$mem" = "MemTotal: 2040824 kB" ]
+  [ "$mem" = "MemTotal: 8167820 kB" ]
 }
 
 
