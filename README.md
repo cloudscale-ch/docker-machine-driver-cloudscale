@@ -15,8 +15,8 @@ You can find sources and pre-compiled binaries [here](https://github.com/cloudsc
 
 ```bash
 # Download the binary (this example downloads the binary for Linux amd64)
-$ wget https://github.com/cloudscale-ch/docker-machine-driver-cloudscale/releases/download/v1.2.0/docker-machine-driver-cloudscale_v1.2.0_linux_amd64.tar.gz
-$ tar xzvf docker-machine-driver-cloudscale_v1.2.0_linux_amd64.tar.gz
+$ wget https://github.com/cloudscale-ch/docker-machine-driver-cloudscale/releases/download/v1.2.1/docker-machine-driver-cloudscale_v1.2.1_linux_amd64.tar.gz
+$ tar xzvf docker-machine-driver-cloudscale_v1.2.1_linux_amd64.tar.gz
 
 # Make it executable and copy the binary to a directory included in your $PATH
 $ chmod +x docker-machine-driver-cloudscale
@@ -31,7 +31,7 @@ $ docker-machine create \
   --cloudscale-token=... \
   --cloudscale-zone lpg1 \
   --cloudscale-image=ubuntu-18.04 \
-  --cloudscale-flavor=flex-4 \
+  --cloudscale-flavor=flex-8-4 \
   some-machine
 ```
 
@@ -42,7 +42,7 @@ See `docker-machine create  --driver cloudscale --help` for a complete list of a
 ```bash
 $ CLOUDSCALE_TOKEN=... \
   && CLOUDSCALE_IMAGE=ubuntu-18.04 \
-  && CLOUDSCALE_FLAVOR=flex-4
+  && CLOUDSCALE_FLAVOR=flex-8-4
   && CLOUDSCALE_ZONE=lpg1 \
   docker-machine create \
      --driver cloudscale \
@@ -90,7 +90,7 @@ $ docker-machine create \
 
 - `--cloudscale-token`: **required**. Your project-specific access token for the cloudscale.ch API.
 - `--cloudscale-image`: The slug of the cloudscale.ch image to use, see [Images API](https://www.cloudscale.ch/en/api/v1#images) for how to get a list of available images (defaults to `ubuntu-18.04`). A list of operating systems supported by docker-machine can be obtained [here](https://docs.docker.com/machine/drivers/os-base/).
-- `--cloudscale-flavor`: The flavor of the cloudscale.ch server, see [Flavor API](https://www.cloudscale.ch/en/api/v1#flavors) for how to get a list of available flavors (defaults to `flex-4`).
+- `--cloudscale-flavor`: The flavor of the cloudscale.ch server, see [Flavor API](https://www.cloudscale.ch/en/api/v1#flavors) for how to get a list of available flavors (defaults to `flex-8-4`).
 - `--cloudscale-zone`: The zone in which the cloudscale.ch server will be created, see [Regions and Zones](https://www.cloudscale.ch/en/api/v1#regions) for how to get a list of available zones (defaults to [your default zone](https://control.cloudscale.ch/user/project))
 - `--cloudscale-volume-size-gb`: The size of the root volume in GB (defaults to `10`).
 - `--cloudscale-ssh-user`: The SSH user (defaults to `root`).
