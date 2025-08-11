@@ -1,3 +1,20 @@
+### ⚠️ Repository Archived
+
+**Notice:** This repository has been archived and is now read-only.
+No further updates, bug fixes, or feature additions will be made. You can continue to use the published versions.
+
+Please contact [support@cloudscale.ch](mailto:support@cloudscale.ch) if you have any questions.
+
+Why was this repository archived, and what alternatives are offered?
+
+- The [docker/machine](https://github.com/docker/machine) project was archived in September 2021.
+- GitLab's preferred approach to setting up on-demand runners is the
+  [fleeting](https://docs.gitlab.com/runner/fleet_scaling/fleeting/) library. We provide a
+  [plugin](https://github.com/cloudscale-ch/fleeting-plugin-cloudscale) for this.
+- [RKEv1](https://www.suse.com/c/rke-end-of-life-by-july-2025-replatform-to-rke2-or-k3s/), which
+  also used docker-machine and our [ui-driver](https://github.com/cloudscale-ch/ui-driver-cloudscale),
+  has reached EOL in July 2025.
+
 # cloudscale.ch Docker machine driver
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/cloudscale-ch/docker-machine-driver-cloudscale)](https://goreportcard.com/report/github.com/cloudscale-ch/docker-machine-driver-cloudscale)
